@@ -1,11 +1,21 @@
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using MyApplication.Client.Pages;
 using MyApplication.Components;
+using MyApplication.Components.Data;
+using MyApplication.Components.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add MudBlazor services
 builder.Services.AddMudServices();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));
+});
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
